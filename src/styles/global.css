@@ -28,7 +28,9 @@
   --accent:       var(--yellow);
   --error:        var(--red);
 
-  --font-mono:    'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
+  /* UI chrome uses Inconsolata; ASCII output keeps a tight fixed-width stack */
+  --font-ui:      'Inconsolata', 'JetBrains Mono', 'Fira Code', monospace;
+  --font-ascii:   'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
 }
 
 /* ── Base reset ────────────────────────────────────────────── */
@@ -40,7 +42,7 @@ html, body {
   padding: 0;
   background-color: var(--bg);
   color: var(--text);
-  font-family: var(--font-mono);
+  font-family: var(--font-ui);
   font-size: 13px;
   line-height: 1.4;
   overflow: hidden;
@@ -143,7 +145,7 @@ html, body {
   background: none;
   border: none;
   color: var(--yellow);
-  font-family: var(--font-mono);
+  font-family: var(--font-ui);
   font-size: 11px;
   font-weight: bold;
   letter-spacing: 0.08em;
@@ -198,7 +200,7 @@ html, body {
   background-color: var(--bg);
   color: var(--text);
   border: 1px solid var(--border);
-  font-family: var(--font-mono);
+  font-family: var(--font-ui);
   font-size: 12px;
   padding: 2px 6px;
   width: 80px;
@@ -221,7 +223,7 @@ html, body {
   background-color: var(--bg);
   color: var(--text);
   border: 1px solid var(--border);
-  font-family: var(--font-mono);
+  font-family: var(--font-ui);
   font-size: 11px;
   padding: 2px 4px;
   outline: none;
@@ -274,7 +276,7 @@ html, body {
   background-color: var(--bg);
   color: var(--text-dim);
   border: 1px solid var(--border);
-  font-family: var(--font-mono);
+  font-family: var(--font-ui);
   font-size: 10px;
   padding: 1px 3px;
   width: 48px;
@@ -331,7 +333,7 @@ html, body {
   background: none;
   border: 1px solid var(--border-focus);
   color: var(--yellow);
-  font-family: var(--font-mono);
+  font-family: var(--font-ui);
   font-size: 12px;
   padding: 4px 10px;
   cursor: pointer;
@@ -357,7 +359,7 @@ html, body {
   background: none;
   border: 1px solid var(--border);
   color: var(--cyan);
-  font-family: var(--font-mono);
+  font-family: var(--font-ui);
   font-size: 11px;
   padding: 5px 4px;
   cursor: pointer;
@@ -426,7 +428,7 @@ html, body {
   background: none;
   border: 1px solid var(--border);
   color: var(--cyan);
-  font-family: var(--font-mono);
+  font-family: var(--font-ui);
   font-size: 11px;
   padding: 1px 6px;
   cursor: pointer;
@@ -468,7 +470,7 @@ html, body {
 .ascii-output {
   margin: 0;
   padding: 0;
-  font-family: var(--font-mono);
+  font-family: var(--font-ascii);
   line-height: 1.2;
   white-space: pre;
   letter-spacing: 0;
