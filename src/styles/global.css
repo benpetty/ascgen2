@@ -1,19 +1,36 @@
 @import "tailwindcss";
 
-/* ── Terminal colour palette ───────────────────────────────── */
+/* ── Colour palette — Claude CLI inspired ──────────────────── */
 :root {
-  --bg:           #0a0a0a;
-  --surface:      #0d120d;
-  --surface-alt:  #111811;
-  --border:       #1a2e1a;
-  --border-focus: #2a6a2a;
-  --text:         #33cc44;
-  --text-bright:  #55ff66;
-  --text-dim:     #1a6622;
-  --text-muted:   #0d4014;
-  --label:        #88cc88;
-  --accent:       #ffdd00;
-  --error:        #ff3333;
+  /* Backgrounds */
+  --bg:           #0f0f10;
+  --surface:      #161618;
+  --surface-alt:  #1e1e22;
+
+  /* Borders */
+  --border:       #2c2c31;
+  --border-focus: #e8760a;
+
+  /* Text */
+  --text:         #e2e2e5;
+  --text-bright:  #ffffff;
+  --text-dim:     #5c5c66;
+  --text-muted:   #38383f;
+  --label:        #9999a8;
+
+  /* Accent colours */
+  --orange:       #e8760a;
+  --orange-bright:#f97316;
+  --purple:       #8b5cf6;
+  --purple-dim:   #3b2f6e;
+  --cyan:         #06b6d4;
+  --cyan-dim:     #0e4a57;
+  --green:        #22c55e;
+
+  /* Semantic */
+  --accent:       var(--orange);
+  --error:        #ef4444;
+
   --font-mono:    'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
 }
 
@@ -59,12 +76,12 @@ html, body {
 }
 
 .header-prompt {
-  color: var(--text-bright);
+  color: var(--orange);
   font-weight: bold;
 }
 
 .header-title {
-  color: var(--text-bright);
+  color: var(--orange-bright);
   font-weight: bold;
   font-size: 14px;
   letter-spacing: 0.05em;
@@ -82,7 +99,7 @@ html, body {
 }
 
 .header-filename {
-  color: var(--label);
+  color: var(--cyan);
   font-size: 11px;
   max-width: 240px;
   overflow: hidden;
@@ -128,7 +145,7 @@ html, body {
   padding: 6px 10px;
   background: none;
   border: none;
-  color: var(--accent);
+  color: var(--orange);
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: bold;
@@ -147,7 +164,7 @@ html, body {
 }
 
 .section-title {
-  color: var(--accent);
+  color: var(--orange);
 }
 
 .settings-section-body {
@@ -239,14 +256,14 @@ html, body {
   appearance: none;
   width: 10px;
   height: 14px;
-  background: var(--text);
+  background: var(--orange);
   cursor: pointer;
 }
 
 .terminal-slider::-moz-range-thumb {
   width: 10px;
   height: 14px;
-  background: var(--text);
+  background: var(--orange);
   border: none;
   cursor: pointer;
 }
@@ -283,7 +300,7 @@ html, body {
 }
 
 .checkbox-box {
-  color: var(--text);
+  color: var(--purple);
   font-size: 12px;
   min-width: 28px;
   font-weight: bold;
@@ -310,8 +327,8 @@ html, body {
 /* ── Buttons ───────────────────────────────────────────────── */
 .btn-primary {
   background: none;
-  border: 1px solid var(--border-focus);
-  color: var(--text-bright);
+  border: 1px solid var(--orange);
+  color: var(--orange-bright);
   font-family: var(--font-mono);
   font-size: 12px;
   padding: 4px 10px;
@@ -320,13 +337,12 @@ html, body {
 }
 
 .btn-primary:hover {
-  background-color: var(--surface-alt);
-  border-color: var(--text);
-  color: var(--accent);
+  background-color: var(--orange);
+  color: var(--bg);
 }
 
 .btn-primary:active {
-  background-color: var(--border);
+  background-color: var(--orange-bright);
 }
 
 .export-buttons {
@@ -338,7 +354,7 @@ html, body {
 .btn-export {
   background: none;
   border: 1px solid var(--border);
-  color: var(--text);
+  color: var(--cyan);
   font-family: var(--font-mono);
   font-size: 11px;
   padding: 5px 4px;
@@ -347,13 +363,13 @@ html, body {
 }
 
 .btn-export:hover:not(:disabled) {
-  border-color: var(--text);
+  border-color: var(--cyan);
   color: var(--text-bright);
-  background-color: var(--surface-alt);
+  background-color: var(--cyan-dim);
 }
 
 .btn-export:disabled {
-  opacity: 0.3;
+  opacity: 0.25;
   cursor: not-allowed;
 }
 
@@ -384,7 +400,7 @@ html, body {
 }
 
 .preview-toolbar-label {
-  color: var(--accent);
+  color: var(--orange);
   font-size: 11px;
   font-weight: bold;
   letter-spacing: 0.06em;
@@ -405,7 +421,7 @@ html, body {
 .zoom-btn {
   background: none;
   border: 1px solid var(--border);
-  color: var(--text);
+  color: var(--cyan);
   font-family: var(--font-mono);
   font-size: 11px;
   padding: 1px 6px;
@@ -413,7 +429,8 @@ html, body {
 }
 
 .zoom-btn:hover {
-  border-color: var(--text);
+  border-color: var(--cyan);
+  background-color: var(--cyan-dim);
   color: var(--text-bright);
 }
 
@@ -438,7 +455,7 @@ html, body {
 .preview-area::-webkit-scrollbar-corner { background: var(--bg); }
 
 .preview-area.drag-over {
-  outline: 2px dashed var(--border-focus);
+  outline: 2px dashed var(--purple);
   outline-offset: -4px;
 }
 
@@ -467,7 +484,7 @@ html, body {
 }
 
 .status-text {
-  color: var(--text-dim);
+  color: var(--orange);
   font-size: 13px;
 }
 
@@ -507,14 +524,14 @@ html, body {
 }
 
 .drop-hint {
-  color: var(--label);
+  color: var(--text);
   font-size: 13px;
   margin: 0;
   text-align: center;
 }
 
 .drop-hint-sub {
-  color: var(--text-muted);
+  color: var(--text-dim);
   font-size: 11px;
   margin: 0;
   text-align: center;
