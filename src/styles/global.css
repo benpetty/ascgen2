@@ -1,35 +1,32 @@
 @import "tailwindcss";
 
-/* ── Colour palette — Claude CLI inspired ──────────────────── */
+/* ── Colour palette — VSCode Dark High Contrast ────────────── */
 :root {
-  /* Backgrounds */
-  --bg:           #0f0f10;
-  --surface:      #161618;
-  --surface-alt:  #1e1e22;
+  /* Backgrounds — pure black, the HC signature */
+  --bg:           #000000;
+  --surface:      #000000;
+  --surface-alt:  #0a0a0a;
 
-  /* Borders */
-  --border:       #2c2c31;
-  --border-focus: #e8760a;
+  /* Borders — cyan contrastBorder + yellow focus, direct from VSCode HC */
+  --border:       #6fc3df;
+  --border-focus: #ffe700;
 
   /* Text */
-  --text:         #e2e2e5;
+  --text:         #ffffff;
   --text-bright:  #ffffff;
-  --text-dim:     #5c5c66;
-  --text-muted:   #38383f;
-  --label:        #9999a8;
+  --text-dim:     #7a7a7a;
+  --text-muted:   #3a3a3a;
+  --label:        #cccccc;
 
   /* Accent colours */
-  --orange:       #e8760a;
-  --orange-bright:#f97316;
-  --purple:       #8b5cf6;
-  --purple-dim:   #3b2f6e;
-  --cyan:         #06b6d4;
-  --cyan-dim:     #0e4a57;
-  --green:        #22c55e;
+  --yellow:       #ffe700;
+  --cyan:         #6fc3df;
+  --green:        #73c991;
+  --red:          #f14c4c;
 
   /* Semantic */
-  --accent:       var(--orange);
-  --error:        #ef4444;
+  --accent:       var(--yellow);
+  --error:        var(--red);
 
   --font-mono:    'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
 }
@@ -76,12 +73,12 @@ html, body {
 }
 
 .header-prompt {
-  color: var(--orange);
+  color: var(--cyan);
   font-weight: bold;
 }
 
 .header-title {
-  color: var(--orange-bright);
+  color: var(--yellow);
   font-weight: bold;
   font-size: 14px;
   letter-spacing: 0.05em;
@@ -145,7 +142,7 @@ html, body {
   padding: 6px 10px;
   background: none;
   border: none;
-  color: var(--orange);
+  color: var(--yellow);
   font-family: var(--font-mono);
   font-size: 11px;
   font-weight: bold;
@@ -156,15 +153,17 @@ html, body {
 
 .settings-section-header:hover {
   background-color: var(--surface-alt);
+  outline: 1px solid var(--border);
+  outline-offset: -1px;
 }
 
 .section-toggle {
-  color: var(--text-dim);
+  color: var(--cyan);
   font-size: 9px;
 }
 
 .section-title {
-  color: var(--orange);
+  color: var(--yellow);
 }
 
 .settings-section-body {
@@ -208,7 +207,8 @@ html, body {
 
 .terminal-input:focus {
   border-color: var(--border-focus);
-  color: var(--text-bright);
+  outline: 1px solid var(--border-focus);
+  outline-offset: -1px;
 }
 
 .terminal-input.ramp-input {
@@ -230,6 +230,8 @@ html, body {
 
 .terminal-select:focus {
   border-color: var(--border-focus);
+  outline: 1px solid var(--border-focus);
+  outline-offset: -1px;
 }
 
 /* ── Sliders ───────────────────────────────────────────────── */
@@ -256,14 +258,14 @@ html, body {
   appearance: none;
   width: 10px;
   height: 14px;
-  background: var(--orange);
+  background: var(--yellow);
   cursor: pointer;
 }
 
 .terminal-slider::-moz-range-thumb {
   width: 10px;
   height: 14px;
-  background: var(--orange);
+  background: var(--yellow);
   border: none;
   cursor: pointer;
 }
@@ -300,7 +302,7 @@ html, body {
 }
 
 .checkbox-box {
-  color: var(--purple);
+  color: var(--cyan);
   font-size: 12px;
   min-width: 28px;
   font-weight: bold;
@@ -327,8 +329,8 @@ html, body {
 /* ── Buttons ───────────────────────────────────────────────── */
 .btn-primary {
   background: none;
-  border: 1px solid var(--orange);
-  color: var(--orange-bright);
+  border: 1px solid var(--border-focus);
+  color: var(--yellow);
   font-family: var(--font-mono);
   font-size: 12px;
   padding: 4px 10px;
@@ -337,12 +339,12 @@ html, body {
 }
 
 .btn-primary:hover {
-  background-color: var(--orange);
+  background-color: var(--yellow);
   color: var(--bg);
 }
 
 .btn-primary:active {
-  background-color: var(--orange-bright);
+  outline: 1px solid var(--border-focus);
 }
 
 .export-buttons {
@@ -363,9 +365,11 @@ html, body {
 }
 
 .btn-export:hover:not(:disabled) {
-  border-color: var(--cyan);
-  color: var(--text-bright);
-  background-color: var(--cyan-dim);
+  border-color: var(--border-focus);
+  color: var(--yellow);
+  background-color: var(--surface-alt);
+  outline: 1px solid var(--border-focus);
+  outline-offset: -1px;
 }
 
 .btn-export:disabled {
@@ -400,7 +404,7 @@ html, body {
 }
 
 .preview-toolbar-label {
-  color: var(--orange);
+  color: var(--yellow);
   font-size: 11px;
   font-weight: bold;
   letter-spacing: 0.06em;
@@ -429,9 +433,10 @@ html, body {
 }
 
 .zoom-btn:hover {
-  border-color: var(--cyan);
-  background-color: var(--cyan-dim);
-  color: var(--text-bright);
+  border-color: var(--border-focus);
+  color: var(--yellow);
+  outline: 1px solid var(--border-focus);
+  outline-offset: -1px;
 }
 
 .zoom-value {
@@ -455,7 +460,7 @@ html, body {
 .preview-area::-webkit-scrollbar-corner { background: var(--bg); }
 
 .preview-area.drag-over {
-  outline: 2px dashed var(--purple);
+  outline: 2px dashed var(--border-focus);
   outline-offset: -4px;
 }
 
@@ -484,7 +489,7 @@ html, body {
 }
 
 .status-text {
-  color: var(--orange);
+  color: var(--cyan);
   font-size: 13px;
 }
 
