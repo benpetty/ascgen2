@@ -1,20 +1,36 @@
 @import "tailwindcss";
 
-/* ── Terminal colour palette ───────────────────────────────── */
+/* ── Colour palette — VSCode Dark High Contrast ────────────── */
 :root {
-  --bg:           #0a0a0a;
-  --surface:      #0d120d;
-  --surface-alt:  #111811;
-  --border:       #1a2e1a;
-  --border-focus: #2a6a2a;
-  --text:         #33cc44;
-  --text-bright:  #55ff66;
-  --text-dim:     #1a6622;
-  --text-muted:   #0d4014;
-  --label:        #88cc88;
-  --accent:       #ffdd00;
-  --error:        #ff3333;
-  --font-mono:    'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
+  /* Backgrounds — pure black, the HC signature */
+  --bg:           #000000;
+  --surface:      #000000;
+  --surface-alt:  #0a0a0a;
+
+  /* Borders — cyan contrastBorder + yellow focus, direct from VSCode HC */
+  --border:       #6fc3df;
+  --border-focus: #ffe700;
+
+  /* Text */
+  --text:         #ffffff;
+  --text-bright:  #ffffff;
+  --text-dim:     #7a7a7a;
+  --text-muted:   #3a3a3a;
+  --label:        #cccccc;
+
+  /* Accent colours */
+  --yellow:       #ffe700;
+  --cyan:         #6fc3df;
+  --green:        #73c991;
+  --red:          #f14c4c;
+
+  /* Semantic */
+  --accent:       var(--yellow);
+  --error:        var(--red);
+
+  /* UI chrome uses Inconsolata; ASCII output keeps a tight fixed-width stack */
+  --font-ui:      'Inconsolata', 'JetBrains Mono', 'Fira Code', monospace;
+  --font-ascii:   'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
 }
 
 /* ── Base reset ────────────────────────────────────────────── */
@@ -26,8 +42,8 @@ html, body {
   padding: 0;
   background-color: var(--bg);
   color: var(--text);
-  font-family: var(--font-mono);
-  font-size: 13px;
+  font-family: var(--font-ui);
+  font-size: 14px;
   line-height: 1.4;
   overflow: hidden;
 }
@@ -59,20 +75,20 @@ html, body {
 }
 
 .header-prompt {
-  color: var(--text-bright);
+  color: var(--cyan);
   font-weight: bold;
 }
 
 .header-title {
-  color: var(--text-bright);
+  color: var(--yellow);
   font-weight: bold;
-  font-size: 14px;
+  font-size: 15px;
   letter-spacing: 0.05em;
 }
 
 .header-subtitle {
   color: var(--text-dim);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .header-right {
@@ -82,8 +98,8 @@ html, body {
 }
 
 .header-filename {
-  color: var(--label);
-  font-size: 11px;
+  color: var(--cyan);
+  font-size: 12px;
   max-width: 240px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -128,9 +144,9 @@ html, body {
   padding: 6px 10px;
   background: none;
   border: none;
-  color: var(--accent);
-  font-family: var(--font-mono);
-  font-size: 11px;
+  color: var(--yellow);
+  font-family: var(--font-ui);
+  font-size: 12px;
   font-weight: bold;
   letter-spacing: 0.08em;
   cursor: pointer;
@@ -139,15 +155,17 @@ html, body {
 
 .settings-section-header:hover {
   background-color: var(--surface-alt);
+  outline: 1px solid var(--border);
+  outline-offset: -1px;
 }
 
 .section-toggle {
-  color: var(--text-dim);
-  font-size: 9px;
+  color: var(--cyan);
+  font-size: 10px;
 }
 
 .section-title {
-  color: var(--accent);
+  color: var(--yellow);
 }
 
 .settings-section-body {
@@ -165,14 +183,14 @@ html, body {
 
 .control-label {
   color: var(--label);
-  font-size: 11px;
+  font-size: 12px;
   min-width: 100px;
   flex-shrink: 0;
 }
 
 .control-value {
   color: var(--text-dim);
-  font-size: 10px;
+  font-size: 11px;
   min-width: 32px;
   text-align: right;
 }
@@ -182,8 +200,8 @@ html, body {
   background-color: var(--bg);
   color: var(--text);
   border: 1px solid var(--border);
-  font-family: var(--font-mono);
-  font-size: 12px;
+  font-family: var(--font-ui);
+  font-size: 13px;
   padding: 2px 6px;
   width: 80px;
   outline: none;
@@ -191,12 +209,13 @@ html, body {
 
 .terminal-input:focus {
   border-color: var(--border-focus);
-  color: var(--text-bright);
+  outline: 1px solid var(--border-focus);
+  outline-offset: -1px;
 }
 
 .terminal-input.ramp-input {
   width: 100%;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0;
 }
 
@@ -204,8 +223,8 @@ html, body {
   background-color: var(--bg);
   color: var(--text);
   border: 1px solid var(--border);
-  font-family: var(--font-mono);
-  font-size: 11px;
+  font-family: var(--font-ui);
+  font-size: 12px;
   padding: 2px 4px;
   outline: none;
   flex: 1;
@@ -213,6 +232,8 @@ html, body {
 
 .terminal-select:focus {
   border-color: var(--border-focus);
+  outline: 1px solid var(--border-focus);
+  outline-offset: -1px;
 }
 
 /* ── Sliders ───────────────────────────────────────────────── */
@@ -239,14 +260,14 @@ html, body {
   appearance: none;
   width: 10px;
   height: 14px;
-  background: var(--text);
+  background: var(--yellow);
   cursor: pointer;
 }
 
 .terminal-slider::-moz-range-thumb {
   width: 10px;
   height: 14px;
-  background: var(--text);
+  background: var(--yellow);
   border: none;
   cursor: pointer;
 }
@@ -255,8 +276,8 @@ html, body {
   background-color: var(--bg);
   color: var(--text-dim);
   border: 1px solid var(--border);
-  font-family: var(--font-mono);
-  font-size: 10px;
+  font-family: var(--font-ui);
+  font-size: 11px;
   padding: 1px 3px;
   width: 48px;
   outline: none;
@@ -283,15 +304,15 @@ html, body {
 }
 
 .checkbox-box {
-  color: var(--text);
-  font-size: 12px;
+  color: var(--cyan);
+  font-size: 13px;
   min-width: 28px;
   font-weight: bold;
 }
 
 .checkbox-label {
   color: var(--label);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .control-disabled {
@@ -311,22 +332,21 @@ html, body {
 .btn-primary {
   background: none;
   border: 1px solid var(--border-focus);
-  color: var(--text-bright);
-  font-family: var(--font-mono);
-  font-size: 12px;
+  color: var(--yellow);
+  font-family: var(--font-ui);
+  font-size: 13px;
   padding: 4px 10px;
   cursor: pointer;
   letter-spacing: 0.04em;
 }
 
 .btn-primary:hover {
-  background-color: var(--surface-alt);
-  border-color: var(--text);
-  color: var(--accent);
+  background-color: var(--yellow);
+  color: var(--bg);
 }
 
 .btn-primary:active {
-  background-color: var(--border);
+  outline: 1px solid var(--border-focus);
 }
 
 .export-buttons {
@@ -338,22 +358,24 @@ html, body {
 .btn-export {
   background: none;
   border: 1px solid var(--border);
-  color: var(--text);
-  font-family: var(--font-mono);
-  font-size: 11px;
+  color: var(--cyan);
+  font-family: var(--font-ui);
+  font-size: 12px;
   padding: 5px 4px;
   cursor: pointer;
   text-align: center;
 }
 
 .btn-export:hover:not(:disabled) {
-  border-color: var(--text);
-  color: var(--text-bright);
+  border-color: var(--border-focus);
+  color: var(--yellow);
   background-color: var(--surface-alt);
+  outline: 1px solid var(--border-focus);
+  outline-offset: -1px;
 }
 
 .btn-export:disabled {
-  opacity: 0.3;
+  opacity: 0.25;
   cursor: not-allowed;
 }
 
@@ -384,15 +406,15 @@ html, body {
 }
 
 .preview-toolbar-label {
-  color: var(--accent);
-  font-size: 11px;
+  color: var(--yellow);
+  font-size: 12px;
   font-weight: bold;
   letter-spacing: 0.06em;
 }
 
 .preview-dimensions {
   color: var(--text-dim);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .preview-zoom-controls {
@@ -405,21 +427,23 @@ html, body {
 .zoom-btn {
   background: none;
   border: 1px solid var(--border);
-  color: var(--text);
-  font-family: var(--font-mono);
-  font-size: 11px;
+  color: var(--cyan);
+  font-family: var(--font-ui);
+  font-size: 12px;
   padding: 1px 6px;
   cursor: pointer;
 }
 
 .zoom-btn:hover {
-  border-color: var(--text);
-  color: var(--text-bright);
+  border-color: var(--border-focus);
+  color: var(--yellow);
+  outline: 1px solid var(--border-focus);
+  outline-offset: -1px;
 }
 
 .zoom-value {
   color: var(--text-dim);
-  font-size: 11px;
+  font-size: 12px;
   min-width: 28px;
   text-align: center;
 }
@@ -446,7 +470,7 @@ html, body {
 .ascii-output {
   margin: 0;
   padding: 0;
-  font-family: var(--font-mono);
+  font-family: var(--font-ascii);
   line-height: 1.2;
   white-space: pre;
   letter-spacing: 0;
@@ -467,7 +491,7 @@ html, body {
 }
 
 .status-text {
-  color: var(--text-dim);
+  color: var(--cyan);
   font-size: 13px;
 }
 
@@ -507,14 +531,14 @@ html, body {
 }
 
 .drop-hint {
-  color: var(--label);
+  color: var(--text);
   font-size: 13px;
   margin: 0;
   text-align: center;
 }
 
 .drop-hint-sub {
-  color: var(--text-muted);
+  color: var(--text-dim);
   font-size: 11px;
   margin: 0;
   text-align: center;
