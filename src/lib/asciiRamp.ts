@@ -1,6 +1,6 @@
-// Default ramp from Ascgen2 source — ordered from darkest (most ink) to lightest (least ink)
+// Default ramp ordered from lightest (least ink) to darkest (most ink) — suits a dark background
 export const DEFAULT_RAMP =
-  'MMMMMMM@@@@@@@WWWWWWWWWBBBBBBBB000000008888888ZZZZZZZZZaZaaaaaa2222222SSSSSSSXXXXXXXXXXX7777777rrrrrrr;;;;;;;;iiiiiiiii:::::::,:,,,,,,..........         ';
+  '         ..........,,,,,,:,:::::::iiiiiiiii;;;;;;;;rrrrrrr7777777XXXXXXXXXXXSSSSSSS2222222aaaaaaZaZZZZZZZZZ888888800000000BBBBBBBBWWWWWWWWW@@@@@@@MMMMMMM';
 
 export interface RampPreset {
   label: string;
@@ -8,7 +8,7 @@ export interface RampPreset {
 }
 
 export const RAMP_PRESETS: RampPreset[] = [
-  { label: 'Standard (Ascgen2)', ramp: DEFAULT_RAMP },
+  { label: 'Standard (Ascgen2)', ramp: DEFAULT_RAMP }, // light→dark, suits dark backgrounds
   { label: 'Detailed', ramp: '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,"^`\'. ' },
   { label: 'Simple', ramp: '@#S%?*+;:,. ' },
   { label: 'Minimal', ramp: '@:. ' },
