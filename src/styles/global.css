@@ -43,7 +43,7 @@ html, body {
   background-color: var(--bg);
   color: var(--text);
   font-family: var(--font-ui);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.4;
   overflow: hidden;
 }
@@ -82,13 +82,13 @@ html, body {
 .header-title {
   color: var(--yellow);
   font-weight: bold;
-  font-size: 14px;
+  font-size: 15px;
   letter-spacing: 0.05em;
 }
 
 .header-subtitle {
   color: var(--text-dim);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .header-right {
@@ -99,7 +99,7 @@ html, body {
 
 .header-filename {
   color: var(--cyan);
-  font-size: 11px;
+  font-size: 12px;
   max-width: 240px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -146,7 +146,7 @@ html, body {
   border: none;
   color: var(--yellow);
   font-family: var(--font-ui);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: bold;
   letter-spacing: 0.08em;
   cursor: pointer;
@@ -161,7 +161,7 @@ html, body {
 
 .section-toggle {
   color: var(--cyan);
-  font-size: 9px;
+  font-size: 10px;
 }
 
 .section-title {
@@ -183,14 +183,14 @@ html, body {
 
 .control-label {
   color: var(--label);
-  font-size: 11px;
+  font-size: 12px;
   min-width: 100px;
   flex-shrink: 0;
 }
 
 .control-value {
   color: var(--text-dim);
-  font-size: 10px;
+  font-size: 11px;
   min-width: 32px;
   text-align: right;
 }
@@ -201,7 +201,7 @@ html, body {
   color: var(--text);
   border: 1px solid var(--border);
   font-family: var(--font-ui);
-  font-size: 12px;
+  font-size: 13px;
   padding: 2px 6px;
   width: 80px;
   outline: none;
@@ -215,7 +215,7 @@ html, body {
 
 .terminal-input.ramp-input {
   width: 100%;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 0;
 }
 
@@ -224,7 +224,7 @@ html, body {
   color: var(--text);
   border: 1px solid var(--border);
   font-family: var(--font-ui);
-  font-size: 11px;
+  font-size: 12px;
   padding: 2px 4px;
   outline: none;
   flex: 1;
@@ -277,7 +277,7 @@ html, body {
   color: var(--text-dim);
   border: 1px solid var(--border);
   font-family: var(--font-ui);
-  font-size: 10px;
+  font-size: 11px;
   padding: 1px 3px;
   width: 48px;
   outline: none;
@@ -305,14 +305,14 @@ html, body {
 
 .checkbox-box {
   color: var(--cyan);
-  font-size: 12px;
+  font-size: 13px;
   min-width: 28px;
   font-weight: bold;
 }
 
 .checkbox-label {
   color: var(--label);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .control-disabled {
@@ -334,7 +334,7 @@ html, body {
   border: 1px solid var(--border-focus);
   color: var(--yellow);
   font-family: var(--font-ui);
-  font-size: 12px;
+  font-size: 13px;
   padding: 4px 10px;
   cursor: pointer;
   letter-spacing: 0.04em;
@@ -360,7 +360,7 @@ html, body {
   border: 1px solid var(--border);
   color: var(--cyan);
   font-family: var(--font-ui);
-  font-size: 11px;
+  font-size: 12px;
   padding: 5px 4px;
   cursor: pointer;
   text-align: center;
@@ -407,14 +407,14 @@ html, body {
 
 .preview-toolbar-label {
   color: var(--yellow);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: bold;
   letter-spacing: 0.06em;
 }
 
 .preview-dimensions {
   color: var(--text-dim);
-  font-size: 11px;
+  font-size: 12px;
 }
 
 .preview-zoom-controls {
@@ -429,7 +429,7 @@ html, body {
   border: 1px solid var(--border);
   color: var(--cyan);
   font-family: var(--font-ui);
-  font-size: 11px;
+  font-size: 12px;
   padding: 1px 6px;
   cursor: pointer;
 }
@@ -443,7 +443,7 @@ html, body {
 
 .zoom-value {
   color: var(--text-dim);
-  font-size: 11px;
+  font-size: 12px;
   min-width: 28px;
   text-align: center;
 }
