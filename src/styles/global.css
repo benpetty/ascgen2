@@ -1,0 +1,528 @@
+@import "tailwindcss";
+
+/* ── Terminal colour palette ───────────────────────────────── */
+:root {
+  --bg:           #0a0a0a;
+  --surface:      #0d120d;
+  --surface-alt:  #111811;
+  --border:       #1a2e1a;
+  --border-focus: #2a6a2a;
+  --text:         #33cc44;
+  --text-bright:  #55ff66;
+  --text-dim:     #1a6622;
+  --text-muted:   #0d4014;
+  --label:        #88cc88;
+  --accent:       #ffdd00;
+  --error:        #ff3333;
+  --font-mono:    'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
+}
+
+/* ── Base reset ────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.4;
+  overflow: hidden;
+}
+
+/* ── App root layout ───────────────────────────────────────── */
+.app-root {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Header ────────────────────────────────────────────────── */
+.app-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  gap: 12px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-prompt {
+  color: var(--text-bright);
+  font-weight: bold;
+}
+
+.header-title {
+  color: var(--text-bright);
+  font-weight: bold;
+  font-size: 14px;
+  letter-spacing: 0.05em;
+}
+
+.header-subtitle {
+  color: var(--text-dim);
+  font-size: 11px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-filename {
+  color: var(--label);
+  font-size: 11px;
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ── App body ──────────────────────────────────────────────── */
+.app-body {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* ── Sidebar ───────────────────────────────────────────────── */
+.sidebar {
+  width: 260px;
+  flex-shrink: 0;
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: var(--surface);
+}
+
+.sidebar::-webkit-scrollbar { width: 4px; }
+.sidebar::-webkit-scrollbar-track { background: var(--bg); }
+.sidebar::-webkit-scrollbar-thumb { background: var(--border); }
+
+/* ── Settings panel ────────────────────────────────────────── */
+.settings-panel {
+  padding: 4px 0;
+}
+
+.settings-section {
+  border-bottom: 1px solid var(--border);
+}
+
+.settings-section-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 6px 10px;
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  text-align: left;
+}
+
+.settings-section-header:hover {
+  background-color: var(--surface-alt);
+}
+
+.section-toggle {
+  color: var(--text-dim);
+  font-size: 9px;
+}
+
+.section-title {
+  color: var(--accent);
+}
+
+.settings-section-body {
+  padding: 4px 8px 8px;
+}
+
+/* ── Control rows ──────────────────────────────────────────── */
+.control-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 0;
+  flex-wrap: wrap;
+}
+
+.control-label {
+  color: var(--label);
+  font-size: 11px;
+  min-width: 100px;
+  flex-shrink: 0;
+}
+
+.control-value {
+  color: var(--text-dim);
+  font-size: 10px;
+  min-width: 32px;
+  text-align: right;
+}
+
+/* ── Inputs ────────────────────────────────────────────────── */
+.terminal-input {
+  background-color: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 2px 6px;
+  width: 80px;
+  outline: none;
+}
+
+.terminal-input:focus {
+  border-color: var(--border-focus);
+  color: var(--text-bright);
+}
+
+.terminal-input.ramp-input {
+  width: 100%;
+  font-size: 10px;
+  letter-spacing: 0;
+}
+
+.terminal-select {
+  background-color: var(--bg);
+  color: var(--text);
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 2px 4px;
+  outline: none;
+  flex: 1;
+}
+
+.terminal-select:focus {
+  border-color: var(--border-focus);
+}
+
+/* ── Sliders ───────────────────────────────────────────────── */
+.slider-group {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: 1;
+}
+
+.terminal-slider {
+  flex: 1;
+  height: 3px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--surface-alt);
+  outline: none;
+  border: 1px solid var(--border);
+  cursor: pointer;
+}
+
+.terminal-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 10px;
+  height: 14px;
+  background: var(--text);
+  cursor: pointer;
+}
+
+.terminal-slider::-moz-range-thumb {
+  width: 10px;
+  height: 14px;
+  background: var(--text);
+  border: none;
+  cursor: pointer;
+}
+
+.slider-number-input {
+  background-color: var(--bg);
+  color: var(--text-dim);
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  padding: 1px 3px;
+  width: 48px;
+  outline: none;
+  text-align: right;
+}
+
+.slider-number-input:focus {
+  border-color: var(--border-focus);
+  color: var(--text);
+}
+
+/* ── Checkboxes ────────────────────────────────────────────── */
+.control-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.control-checkbox:hover .checkbox-label {
+  color: var(--text-bright);
+}
+
+.checkbox-box {
+  color: var(--text);
+  font-size: 12px;
+  min-width: 28px;
+  font-weight: bold;
+}
+
+.checkbox-label {
+  color: var(--label);
+  font-size: 11px;
+}
+
+.control-disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── Radio group ───────────────────────────────────────────── */
+.radio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+/* ── Buttons ───────────────────────────────────────────────── */
+.btn-primary {
+  background: none;
+  border: 1px solid var(--border-focus);
+  color: var(--text-bright);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 4px 10px;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+}
+
+.btn-primary:hover {
+  background-color: var(--surface-alt);
+  border-color: var(--text);
+  color: var(--accent);
+}
+
+.btn-primary:active {
+  background-color: var(--border);
+}
+
+.export-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+}
+
+.btn-export {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 5px 4px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.btn-export:hover:not(:disabled) {
+  border-color: var(--text);
+  color: var(--text-bright);
+  background-color: var(--surface-alt);
+}
+
+.btn-export:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+/* ── Preview area ──────────────────────────────────────────── */
+.preview-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.preview-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+.preview-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 5px 12px;
+  background-color: var(--surface);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.preview-toolbar-label {
+  color: var(--accent);
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 0.06em;
+}
+
+.preview-dimensions {
+  color: var(--text-dim);
+  font-size: 11px;
+}
+
+.preview-zoom-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+}
+
+.zoom-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 1px 6px;
+  cursor: pointer;
+}
+
+.zoom-btn:hover {
+  border-color: var(--text);
+  color: var(--text-bright);
+}
+
+.zoom-value {
+  color: var(--text-dim);
+  font-size: 11px;
+  min-width: 28px;
+  text-align: center;
+}
+
+.preview-area {
+  flex: 1;
+  overflow: auto;
+  position: relative;
+  padding: 8px;
+  transition: background-color 0.1s;
+}
+
+.preview-area::-webkit-scrollbar { width: 6px; height: 6px; }
+.preview-area::-webkit-scrollbar-track { background: var(--bg); }
+.preview-area::-webkit-scrollbar-thumb { background: var(--border); }
+.preview-area::-webkit-scrollbar-corner { background: var(--bg); }
+
+.preview-area.drag-over {
+  outline: 2px dashed var(--border-focus);
+  outline-offset: -4px;
+}
+
+/* ── ASCII output ──────────────────────────────────────────── */
+.ascii-output {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-mono);
+  line-height: 1.2;
+  white-space: pre;
+  letter-spacing: 0;
+}
+
+.ascii-row {
+  display: block;
+  white-space: pre;
+}
+
+/* ── Status overlays ───────────────────────────────────────── */
+.status-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 200px;
+}
+
+.status-text {
+  color: var(--text-dim);
+  font-size: 13px;
+}
+
+.status-error {
+  color: var(--error);
+  font-size: 13px;
+}
+
+.blink {
+  animation: blink-anim 1s step-end infinite;
+}
+
+@keyframes blink-anim {
+  50% { opacity: 0; }
+}
+
+/* ── Drop zone instructions ────────────────────────────────── */
+.drop-instructions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 300px;
+  gap: 12px;
+  padding: 32px;
+}
+
+.drop-art {
+  color: var(--text-dim);
+  font-size: 9px;
+  line-height: 1.2;
+  white-space: pre;
+  text-align: center;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+.drop-hint {
+  color: var(--label);
+  font-size: 13px;
+  margin: 0;
+  text-align: center;
+}
+
+.drop-hint-sub {
+  color: var(--text-muted);
+  font-size: 11px;
+  margin: 0;
+  text-align: center;
+}
+
+/* ── Number input spin cleanup ─────────────────────────────── */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+}
+input[type=number] { -moz-appearance: textfield; }

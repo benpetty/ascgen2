@@ -1,0 +1,18 @@
+---
+import '../styles/global.css';
+import { App } from '../components/App';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="ASCII Generator 2 — web edition. Convert images to ASCII art." />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <title>ascgen2 — ASCII Generator 2</title>
+  </head>
+  <body>
+    <App client:only="react" />
+  </body>
+</html>
