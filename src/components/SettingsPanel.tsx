@@ -35,7 +35,7 @@ export function SettingsPanel({
 
   const handleRampPresetChange = useCallback(
     (event: React.ChangeEvent<HTMLSelectElement>) => {
-      const preset = RAMP_PRESETS.find(p => p.label === event.target.value);
+      const preset = RAMP_PRESETS.find(rampPreset => rampPreset.label === event.target.value);
       if (preset) {
         onSettingsChange({ ...settings, characterRamp: preset.ramp });
       }
@@ -59,7 +59,7 @@ export function SettingsPanel({
     settings.colorMode === 'black-on-white' ? '#ffffff' : '#000000';
 
   const currentPresetLabel =
-    RAMP_PRESETS.find(p => p.ramp === settings.characterRamp)?.label ?? 'Custom';
+    RAMP_PRESETS.find(rampPreset => rampPreset.ramp === settings.characterRamp)?.label ?? 'Custom';
 
   return (
     <div className="settings-panel">
