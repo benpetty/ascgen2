@@ -1,5 +1,11 @@
 # ascgen2 — ASCII Generator 2 (Web Edition)
 
+[![Deploy to GitHub Pages](https://github.com/benpetty/ascgen2/actions/workflows/deploy.yml/badge.svg)](https://github.com/benpetty/ascgen2/actions/workflows/deploy.yml)
+[![Live](https://img.shields.io/badge/live-benpetty.github.io%2Fascgen2-blue)](https://benpetty.github.io/ascgen2/)
+[![Built with Astro](https://img.shields.io/badge/built%20with-Astro-ff5d01)](https://astro.build)
+[![React](https://img.shields.io/badge/React-19-61dafb?logo=react&logoColor=white)](https://react.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178c6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+
 A browser-based port of the original [ASCII Generator 2](https://ascgendotnet.jmsoftware.co.uk) by Jonathan Mathews. Convert images to ASCII art with real-time preview and multiple export formats — no install, no backend, runs entirely in the browser.
 
 **Live:** https://benpetty.github.io/ascgen2/

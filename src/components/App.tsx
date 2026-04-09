@@ -106,7 +106,7 @@ export function App() {
         <div className="header-left">
           <span className="header-prompt">$</span>
           <span className="header-title">ascgen2</span>
-          <span className="header-subtitle">// ascii generator v2 — web edition</span>
+          <span className="header-subtitle">ascii generator v2 — web edition</span>
         </div>
         <div className="header-right">
           {imageFileName && (
