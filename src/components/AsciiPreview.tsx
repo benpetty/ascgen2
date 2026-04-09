@@ -86,14 +86,14 @@ export function AsciiPreview({
           <span className="preview-toolbar-label">zoom:</span>
           <button
             className="zoom-btn"
-            onClick={() => setPreviewFontSize(s => Math.max(4, s - 1))}
+            onClick={() => setPreviewFontSize(currentSize => Math.max(4, currentSize - 1))}
           >
             [-]
           </button>
           <span className="zoom-value">{previewFontSize}px</span>
           <button
             className="zoom-btn"
-            onClick={() => setPreviewFontSize(s => Math.min(24, s + 1))}
+            onClick={() => setPreviewFontSize(currentSize => Math.min(24, currentSize + 1))}
           >
             [+]
           </button>
