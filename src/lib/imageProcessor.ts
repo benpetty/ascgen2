@@ -36,6 +36,26 @@ function createResizedCanvasContext(
   return context;
 }
 
+export function pixelsToGrayscaleInto(
+  rgbaData: Uint8ClampedArray,
+  outputValues: Uint8Array,
+): void {
+  if (rgbaData.length !== outputValues.length * 4) {
+    throw new Error(
+      `pixelsToGrayscaleInto: rgbaData length ${rgbaData.length} does not match outputValues.length * 4 (${outputValues.length * 4})`,
+    );
+  }
+  const pixelCount = outputValues.length;
+  for (let pixelIndex = 0; pixelIndex < pixelCount; pixelIndex++) {
+    const dataOffset = pixelIndex * 4;
+    const red = rgbaData[dataOffset];
+    const green = rgbaData[dataOffset + 1];
+    const blue = rgbaData[dataOffset + 2];
+    // Standard luminance formula (ITU-R BT.601)
+    outputValues[pixelIndex] = Math.round(0.299 * red + 0.587 * green + 0.114 * blue);
+  }
+}
+
 export function extractGrayscaleValues(
   image: HTMLImageElement,
   targetWidth: number,
@@ -43,19 +63,8 @@ export function extractGrayscaleValues(
 ): GrayscaleImage {
   const context = createResizedCanvasContext(image, targetWidth, targetHeight);
   const { data } = context.getImageData(0, 0, targetWidth, targetHeight);
-
-  const pixelCount = targetWidth * targetHeight;
-  const grayscaleValues = new Uint8Array(pixelCount);
-
-  for (let pixelIndex = 0; pixelIndex < pixelCount; pixelIndex++) {
-    const dataOffset = pixelIndex * 4;
-    const red = data[dataOffset];
-    const green = data[dataOffset + 1];
-    const blue = data[dataOffset + 2];
-    // Standard luminance formula (ITU-R BT.601)
-    grayscaleValues[pixelIndex] = Math.round(0.299 * red + 0.587 * green + 0.114 * blue);
-  }
-
+  const grayscaleValues = new Uint8Array(targetWidth * targetHeight);
+  pixelsToGrayscaleInto(data, grayscaleValues);
   return { values: grayscaleValues, width: targetWidth, height: targetHeight };
 }
 
