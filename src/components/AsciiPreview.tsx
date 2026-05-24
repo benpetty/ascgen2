@@ -7,6 +7,10 @@ interface AsciiPreviewProps {
   isProcessing: boolean;
   errorMessage: string | null;
   onFileDrop: (file: File) => void;
+  liveMode: boolean;
+  livePreRef: React.RefObject<HTMLPreElement | null>;
+  liveToolbarControls?: React.ReactNode;
+  onStartCamera?: () => void;
 }
 
 export function AsciiPreview({
@@ -15,6 +19,10 @@ export function AsciiPreview({
   isProcessing,
   errorMessage,
   onFileDrop,
+  liveMode,
+  livePreRef,
+  liveToolbarControls,
+  onStartCamera,
 }: AsciiPreviewProps) {
   const [isDragOver, setIsDragOver] = useState(false);
   const [previewFontSize, setPreviewFontSize] = useState(10);
@@ -82,6 +90,7 @@ export function AsciiPreview({
             {grid[0]?.length ?? 0}×{grid.length} chars
           </span>
         )}
+        {liveToolbarControls}
         <div className="preview-zoom-controls">
           <span className="preview-toolbar-label">zoom:</span>
           <button
@@ -121,25 +130,37 @@ export function AsciiPreview({
           </div>
         )}
 
-        {!grid && !isProcessing && !errorMessage && (
+        {!grid && !isProcessing && !errorMessage && !liveMode && (
           <div className="drop-instructions">
             <pre className="drop-art">{DROP_ZONE_ART}</pre>
             <p className="drop-hint">drag & drop an image here</p>
             <p className="drop-hint-sub">or use [LOAD IMAGE] above</p>
+            {onStartCamera && (
+              <p className="drop-hint-sub">
+                <button className="btn-link" onClick={onStartCamera} type="button">
+                  or [START CAMERA]
+                </button>
+              </p>
+            )}
             <p className="drop-hint-sub">supports: jpg · png · gif · webp · bmp</p>
           </div>
         )}
 
-        {grid && !isProcessing && (
+        {grid && !isProcessing && !liveMode && (
           <pre
             className="ascii-output"
-            style={{
-              fontSize: `${previewFontSize}px`,
-              color: previewTextColor,
-            }}
+            style={{ fontSize: `${previewFontSize}px`, color: previewTextColor }}
           >
             {renderAsciiContent()}
           </pre>
+        )}
+
+        {liveMode && (
+          <pre
+            ref={livePreRef}
+            className="ascii-output"
+            style={{ fontSize: `${previewFontSize}px`, color: previewTextColor }}
+          />
         )}
       </div>
     </div>

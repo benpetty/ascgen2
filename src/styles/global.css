@@ -544,6 +544,17 @@ html, body {
   text-align: center;
 }
 
+/* ── Inline link button ────────────────────────────────────── */
+.btn-link {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+
 /* ── Number input spin cleanup ─────────────────────────────── */
 input[type=number]::-webkit-inner-spin-button,
 input[type=number]::-webkit-outer-spin-button {
