@@ -1,31 +1,19 @@
-import type { GrayscaleImage } from '../types';
-
 function clampToByte(value: number): number {
   return Math.max(0, Math.min(255, Math.round(value)));
 }
 
-/**
- * Applies brightness and contrast adjustments.
- * Brightness: additive offset (-200 to +200)
- * Contrast: uses Photoshop-style formula (-100 to +100)
- */
 export function applyBrightnessContrastFilter(
-  image: GrayscaleImage,
+  inputValues: Uint8Array,
+  outputValues: Uint8Array,
+  _width: number,
+  _height: number,
   brightness: number,
-  contrast: number
-): GrayscaleImage {
-  const { values, width, height } = image;
-  const result = new Uint8Array(values.length);
-
-  // Photoshop-style contrast factor: keeps midpoint at 128
+  contrast: number,
+): void {
   const contrastFactor = (259 * (contrast + 255)) / (255 * (259 - contrast));
-
-  for (let index = 0; index < values.length; index++) {
-    // Apply brightness first, then contrast
-    const brightened = values[index] + brightness;
+  for (let index = 0; index < inputValues.length; index++) {
+    const brightened = inputValues[index] + brightness;
     const contrasted = contrastFactor * (brightened - 128) + 128;
-    result[index] = clampToByte(contrasted);
+    outputValues[index] = clampToByte(contrasted);
   }
-
-  return { values: result, width, height };
 }
