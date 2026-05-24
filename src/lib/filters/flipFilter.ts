@@ -1,28 +1,28 @@
-import type { GrayscaleImage } from '../types';
-
-export function applyFlipHorizontalFilter(image: GrayscaleImage): GrayscaleImage {
-  const { values, width, height } = image;
-  const result = new Uint8Array(values.length);
-
+export function applyFlipHorizontalFilter(
+  inputValues: Uint8Array,
+  outputValues: Uint8Array,
+  width: number,
+  height: number,
+): void {
   for (let row = 0; row < height; row++) {
+    const rowOffset = row * width;
     for (let col = 0; col < width; col++) {
-      result[row * width + col] = values[row * width + (width - 1 - col)];
+      outputValues[rowOffset + col] = inputValues[rowOffset + (width - 1 - col)];
     }
   }
-
-  return { values: result, width, height };
 }
 
-export function applyFlipVerticalFilter(image: GrayscaleImage): GrayscaleImage {
-  const { values, width, height } = image;
-  const result = new Uint8Array(values.length);
-
+export function applyFlipVerticalFilter(
+  inputValues: Uint8Array,
+  outputValues: Uint8Array,
+  width: number,
+  height: number,
+): void {
   for (let row = 0; row < height; row++) {
-    const sourceRow = height - 1 - row;
+    const sourceRowOffset = (height - 1 - row) * width;
+    const targetRowOffset = row * width;
     for (let col = 0; col < width; col++) {
-      result[row * width + col] = values[sourceRow * width + col];
+      outputValues[targetRowOffset + col] = inputValues[sourceRowOffset + col];
     }
   }
-
-  return { values: result, width, height };
 }
