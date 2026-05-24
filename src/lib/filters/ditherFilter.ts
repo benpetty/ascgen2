@@ -1,41 +1,27 @@
-import type { GrayscaleImage } from '../types';
 import { clampToByte } from './filterUtils';
 
-/**
- * Adds controlled noise to create dithering effects.
- * amount: checkerboard pattern strength (0–25)
- * randomness: random noise strength (0–20)
- */
 export function applyDitherFilter(
-  image: GrayscaleImage,
+  inputValues: Uint8Array,
+  outputValues: Uint8Array,
+  width: number,
+  height: number,
   amount: number,
-  randomness: number
-): GrayscaleImage {
-  if (amount === 0 && randomness === 0) return image;
-
-  const { values, width, height } = image;
-  const result = new Uint8Array(values.length);
-
+  randomness: number,
+): void {
   for (let row = 0; row < height; row++) {
+    const rowOffset = row * width;
     for (let col = 0; col < width; col++) {
-      const index = row * width + col;
-      let value = values[index];
-
-      // Checkerboard pattern: alternating positive/negative offset
+      const index = rowOffset + col;
+      let value = inputValues[index];
       if (amount > 0) {
         const checkerOffset = (row + col) % 2 === 0 ? amount : -amount;
         value += checkerOffset;
       }
-
-      // Random noise component
       if (randomness > 0) {
         const noise = (Math.random() * 2 - 1) * randomness;
         value += noise;
       }
-
-      result[index] = clampToByte(value);
+      outputValues[index] = clampToByte(value);
     }
   }
-
-  return { values: result, width, height };
 }
