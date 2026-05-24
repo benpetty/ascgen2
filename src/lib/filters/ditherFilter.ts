@@ -1,8 +1,5 @@
 import type { GrayscaleImage } from '../types';
-
-function clampToByte(value: number): number {
-  return Math.max(0, Math.min(255, Math.round(value)));
-}
+import { clampToByte } from './filterUtils';
 
 /**
  * Adds controlled noise to create dithering effects.

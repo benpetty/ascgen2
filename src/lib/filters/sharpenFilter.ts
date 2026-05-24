@@ -1,8 +1,5 @@
 import type { GrayscaleImage } from '../types';
-
-function clampToByte(value: number): number {
-  return Math.max(0, Math.min(255, Math.round(value)));
-}
+import { clampToByte } from './filterUtils';
 
 // 3×3 sharpen convolution kernel from Ascgen2 source: [0,-2,0,-2,11,-2,0,-2,0] / 3
 const SHARPEN_KERNEL = [0, -2, 0, -2, 11, -2, 0, -2, 0];

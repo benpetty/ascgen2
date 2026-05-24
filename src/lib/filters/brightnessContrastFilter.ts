@@ -1,6 +1,4 @@
-function clampToByte(value: number): number {
-  return Math.max(0, Math.min(255, Math.round(value)));
-}
+import { clampToByte } from './filterUtils';
 
 export function applyBrightnessContrastFilter(
   inputValues: Uint8Array,

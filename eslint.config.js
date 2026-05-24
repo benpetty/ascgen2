@@ -19,6 +19,10 @@ export default tseslint.config(
       ...react.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
       'react/react-in-jsx-scope': 'off', // Not needed with React 17+
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
     },
   },
   {
