@@ -33,7 +33,7 @@ function resolveOutputDimensions(
   return { width: outputWidth, height: Math.max(1, outputHeight) };
 }
 
-function applyFilterPipeline(
+export function applyFilterPipeline(
   inputBuffer: Uint8Array,
   scratchBuffer: Uint8Array,
   width: number,
