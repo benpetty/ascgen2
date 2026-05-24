@@ -9,11 +9,6 @@ export function applyLevelsFilter(
   inputMax: number,
   gamma: number,
 ): void {
-  const isNeutral = inputMin === 0 && inputMax === 255 && gamma === 1.0;
-  if (isNeutral) {
-    outputValues.set(inputValues);
-    return;
-  }
   const inputRange = Math.max(1, inputMax - inputMin);
   const gammaExponent = 1.0 / Math.max(0.01, gamma);
   for (let index = 0; index < inputValues.length; index++) {

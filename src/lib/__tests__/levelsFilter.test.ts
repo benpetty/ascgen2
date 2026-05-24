@@ -2,7 +2,10 @@ import { describe, it, expect } from 'vitest';
 import { applyLevelsFilter } from '../filters/levelsFilter';
 
 describe('applyLevelsFilter', () => {
-  it('copies input to output when settings are neutral', () => {
+  it('produces a numerically-equivalent passthrough for neutral params', () => {
+    // The pipeline orchestrator gates the call externally for the (0, 255, 1.0) neutral case,
+    // so this path is normally unreachable. This test verifies the math still degenerates
+    // to identity if the filter is somehow called directly with neutral params.
     const inputValues = new Uint8Array([0, 128, 255]);
     const outputValues = new Uint8Array(inputValues.length);
     applyLevelsFilter(inputValues, outputValues, inputValues.length, 1, 0, 255, 1.0);
