@@ -1,29 +1,26 @@
-import type { GrayscaleImage } from '../types';
-
-/**
- * Normalizes pixel values to fill the full 0–255 range.
- * Maps the darkest pixel to 0 and the brightest to 255.
- */
-export function applyStretchFilter(image: GrayscaleImage): GrayscaleImage {
-  const { values, width, height } = image;
-
+export function applyStretchFilter(
+  inputValues: Uint8Array,
+  outputValues: Uint8Array,
+  _width: number,
+  _height: number,
+): void {
   let minValue = 255;
   let maxValue = 0;
 
-  for (let index = 0; index < values.length; index++) {
-    if (values[index] < minValue) minValue = values[index];
-    if (values[index] > maxValue) maxValue = values[index];
+  for (let index = 0; index < inputValues.length; index++) {
+    const value = inputValues[index];
+    if (value < minValue) minValue = value;
+    if (value > maxValue) maxValue = value;
   }
 
   const range = maxValue - minValue;
-  if (range === 0) return image; // All pixels same value — nothing to stretch
-
-  const stretched = new Uint8Array(values.length);
-  const scaleFactor = 255 / range;
-
-  for (let index = 0; index < values.length; index++) {
-    stretched[index] = Math.round((values[index] - minValue) * scaleFactor);
+  if (range === 0) {
+    outputValues.set(inputValues);
+    return;
   }
 
-  return { values: stretched, width, height };
+  const scaleFactor = 255 / range;
+  for (let index = 0; index < inputValues.length; index++) {
+    outputValues[index] = Math.round((inputValues[index] - minValue) * scaleFactor);
+  }
 }
