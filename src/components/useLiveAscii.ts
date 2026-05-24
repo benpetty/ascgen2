@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { createCameraSource, type CameraFacing, type CameraSource } from '../lib/cameraSource';
-import { pixelsToGrayscaleInto } from '../lib/imageProcessor';
+import { pixelsToGrayscaleInto, calculateAutoOutputHeight } from '../lib/imageProcessor';
 import { applyFilterPipeline } from '../lib/asciiConverter';
 import { renderGrayscaleToText } from '../lib/liveAsciiRenderer';
 import { reverseRamp } from '../lib/asciiRamp';
@@ -52,14 +52,16 @@ function resolveLiveOutputDimensions(
   settings: ConversionSettings,
 ): { width: number; height: number } {
   const outputWidth = Math.max(1, settings.outputWidth);
-  let outputHeight: number;
-  if (settings.outputHeight > 0 && !settings.maintainAspectRatio) {
-    outputHeight = settings.outputHeight;
-  } else {
-    const aspectRatio = sourceHeight / sourceWidth;
-    outputHeight = Math.max(1, Math.round(outputWidth * aspectRatio * settings.characterAspectRatio));
-  }
-  return { width: outputWidth, height: outputHeight };
+  const outputHeight =
+    settings.outputHeight > 0 && !settings.maintainAspectRatio
+      ? settings.outputHeight
+      : calculateAutoOutputHeight(
+          sourceWidth,
+          sourceHeight,
+          outputWidth,
+          settings.characterAspectRatio,
+        );
+  return { width: outputWidth, height: Math.max(1, outputHeight) };
 }
 
 interface UseLiveAsciiReturn {
@@ -223,19 +225,22 @@ export function useLiveAscii(
     }
   }, []);
 
-  // Issue 2: Snapshot intentionally pauses the live feed and returns the current frame as a canvas.
+  // Snapshot intentionally pauses the live feed and returns the current frame as a canvas.
   // The caller is expected to route the canvas through their state and call resume() when
   // the user wants to return to live streaming. This matches the "freeze in place" UX.
   const snapshot = useCallback((): HTMLCanvasElement | null => {
     const camera = cameraRef.current;
     if (!camera || !camera.isReady()) return null;
-    pause();
     const { source, width, height } = camera.getFrame();
     const snapCanvas = document.createElement('canvas');
     snapCanvas.width = width;
     snapCanvas.height = height;
     const snapContext = snapCanvas.getContext('2d');
-    if (!snapContext) return null;
+    if (!snapContext) {
+      setError('Failed to capture snapshot: 2D canvas context unavailable.');
+      return null;
+    }
+    pause();
     snapContext.drawImage(source, 0, 0);
     return snapCanvas;
   }, [pause]);
