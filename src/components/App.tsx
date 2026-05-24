@@ -29,7 +29,7 @@ export const DEFAULT_SETTINGS: ConversionSettings = {
 };
 
 export function App() {
-  const [loadedImage, setLoadedImage] = useState<HTMLImageElement | null>(null);
+  const [loadedImage, setLoadedImage] = useState<CanvasImageSource | null>(null);
   const [imageFileName, setImageFileName] = useState<string>('');
   const [settings, setSettings] = useState<ConversionSettings>(DEFAULT_SETTINGS);
   const [asciiGrid, setAsciiGrid] = useState<AsciiGrid | null>(null);
@@ -40,7 +40,7 @@ export function App() {
 
   // Debounced conversion to avoid thrashing during slider drags
   const scheduleConversion = useCallback(
-    (image: HTMLImageElement, currentSettings: ConversionSettings) => {
+    (image: CanvasImageSource, currentSettings: ConversionSettings) => {
       if (conversionTimerRef.current) {
         clearTimeout(conversionTimerRef.current);
       }

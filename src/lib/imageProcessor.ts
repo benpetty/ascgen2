@@ -20,19 +20,17 @@ export function loadImageFromFile(file: File): Promise<HTMLImageElement> {
 }
 
 function createResizedCanvasContext(
-  image: HTMLImageElement,
+  source: CanvasImageSource,
   targetWidth: number,
-  targetHeight: number
+  targetHeight: number,
 ): CanvasRenderingContext2D {
   const canvas = document.createElement('canvas');
   canvas.width = targetWidth;
   canvas.height = targetHeight;
-
   const context = canvas.getContext('2d')!;
   context.imageSmoothingEnabled = true;
   context.imageSmoothingQuality = 'high';
-  context.drawImage(image, 0, 0, targetWidth, targetHeight);
-
+  context.drawImage(source, 0, 0, targetWidth, targetHeight);
   return context;
 }
 
@@ -57,11 +55,11 @@ export function pixelsToGrayscaleInto(
 }
 
 export function extractGrayscaleValues(
-  image: HTMLImageElement,
+  source: CanvasImageSource,
   targetWidth: number,
-  targetHeight: number
+  targetHeight: number,
 ): GrayscaleImage {
-  const context = createResizedCanvasContext(image, targetWidth, targetHeight);
+  const context = createResizedCanvasContext(source, targetWidth, targetHeight);
   const { data } = context.getImageData(0, 0, targetWidth, targetHeight);
   const grayscaleValues = new Uint8Array(targetWidth * targetHeight);
   pixelsToGrayscaleInto(data, grayscaleValues);
@@ -69,16 +67,14 @@ export function extractGrayscaleValues(
 }
 
 export function extractColorValues(
-  image: HTMLImageElement,
+  source: CanvasImageSource,
   targetWidth: number,
-  targetHeight: number
+  targetHeight: number,
 ): ColorPixel[] {
-  const context = createResizedCanvasContext(image, targetWidth, targetHeight);
+  const context = createResizedCanvasContext(source, targetWidth, targetHeight);
   const { data } = context.getImageData(0, 0, targetWidth, targetHeight);
-
   const pixelCount = targetWidth * targetHeight;
   const colorValues: ColorPixel[] = new Array(pixelCount);
-
   for (let pixelIndex = 0; pixelIndex < pixelCount; pixelIndex++) {
     const dataOffset = pixelIndex * 4;
     colorValues[pixelIndex] = {
@@ -87,8 +83,36 @@ export function extractColorValues(
       blue: data[dataOffset + 2],
     };
   }
-
   return colorValues;
+}
+
+export function getSourceDimensions(source: CanvasImageSource): { width: number; height: number } {
+  if (source instanceof HTMLImageElement) {
+    return { width: source.naturalWidth, height: source.naturalHeight };
+  }
+  if (source instanceof HTMLVideoElement) {
+    return { width: source.videoWidth, height: source.videoHeight };
+  }
+  if (source instanceof HTMLCanvasElement) {
+    return { width: source.width, height: source.height };
+  }
+  if (typeof ImageBitmap !== 'undefined' && source instanceof ImageBitmap) {
+    return { width: source.width, height: source.height };
+  }
+  if (typeof OffscreenCanvas !== 'undefined' && source instanceof OffscreenCanvas) {
+    return { width: source.width, height: source.height };
+  }
+  if (typeof VideoFrame !== 'undefined' && source instanceof VideoFrame) {
+    // VideoFrame has displayWidth/displayHeight (after PAR correction) and codedWidth/codedHeight (raw pixel dims).
+    // displayWidth/displayHeight is what we want for ASCII rendering.
+    return { width: source.displayWidth, height: source.displayHeight };
+  }
+  if (source instanceof SVGImageElement) {
+    return { width: source.width.baseVal.value, height: source.height.baseVal.value };
+  }
+  throw new Error(
+    `Unsupported CanvasImageSource type: ${Object.prototype.toString.call(source)}`,
+  );
 }
 
 export function calculateAutoOutputHeight(

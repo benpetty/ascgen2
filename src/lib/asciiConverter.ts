@@ -3,6 +3,7 @@ import {
   extractGrayscaleValues,
   extractColorValues,
   calculateAutoOutputHeight,
+  getSourceDimensions,
 } from './imageProcessor';
 import { applyStretchFilter } from './filters/stretchFilter';
 import { applyBrightnessContrastFilter } from './filters/brightnessContrastFilter';
@@ -13,23 +14,22 @@ import { applyFlipHorizontalFilter, applyFlipVerticalFilter } from './filters/fl
 import { mapBrightnessToCharacter, reverseRamp } from './asciiRamp';
 
 function resolveOutputDimensions(
-  image: HTMLImageElement,
-  settings: ConversionSettings
+  source: CanvasImageSource,
+  settings: ConversionSettings,
 ): { width: number; height: number } {
   const outputWidth = Math.max(1, settings.outputWidth);
-
   let outputHeight: number;
   if (settings.outputHeight > 0 && !settings.maintainAspectRatio) {
     outputHeight = settings.outputHeight;
   } else {
+    const { width: sourceWidth, height: sourceHeight } = getSourceDimensions(source);
     outputHeight = calculateAutoOutputHeight(
-      image.naturalWidth,
-      image.naturalHeight,
+      sourceWidth,
+      sourceHeight,
       outputWidth,
-      settings.characterAspectRatio
+      settings.characterAspectRatio,
     );
   }
-
   return { width: outputWidth, height: Math.max(1, outputHeight) };
 }
 
@@ -87,17 +87,17 @@ function applyFilterPipeline(
 }
 
 export function convertImageToAscii(
-  image: HTMLImageElement,
-  settings: ConversionSettings
+  source: CanvasImageSource,
+  settings: ConversionSettings,
 ): AsciiGrid {
-  const { width: outputWidth, height: outputHeight } = resolveOutputDimensions(image, settings);
+  const { width: outputWidth, height: outputHeight } = resolveOutputDimensions(source, settings);
 
-  const grayscaleImage = extractGrayscaleValues(image, outputWidth, outputHeight);
+  const grayscaleImage = extractGrayscaleValues(source, outputWidth, outputHeight);
   const processedImage = applyFilterPipeline(grayscaleImage, settings);
 
   const colorValues =
     settings.colorMode === 'color'
-      ? extractColorValues(image, outputWidth, outputHeight)
+      ? extractColorValues(source, outputWidth, outputHeight)
       : null;
 
   const effectiveRamp = settings.invertRamp
