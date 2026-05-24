@@ -8,9 +8,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 npm run dev        # start dev server at localhost:4321
 npm run build      # production build → dist/
 npm run preview    # preview the production build locally
+npm test           # run the Vitest suite once
+npm run lint       # run eslint over src/
 ```
 
-No test suite or linter is configured.
+Linter: `npm run lint` (eslint, config in `eslint.config.js`). A PostToolUse hook in `.claude/settings.local.json` runs it automatically after Edit/Write to `.ts`/`.tsx` files.
 
 ## Architecture
 
