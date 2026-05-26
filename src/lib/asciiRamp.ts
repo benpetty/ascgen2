@@ -7,13 +7,17 @@ export interface RampPreset {
   ramp: string;
 }
 
+// All ramps are ordered light→dark (space/least-ink first, densest character last)
+// so they render correctly on a dark background. Brightness 0 maps to the first
+// character (no ink), brightness 255 maps to the last (most ink). Use `invertRamp`
+// in settings to flip for black-on-white rendering.
 export const RAMP_PRESETS: RampPreset[] = [
-  { label: 'Standard (Ascgen2)', ramp: DEFAULT_RAMP }, // light→dark, suits dark backgrounds
-  { label: 'Detailed', ramp: '$@B%8&WM#*oahkbdpqwmZO0QLCJUYXzcvunxrjft/\\|()1{}[]?-_+~<>i!lI;:,"^`\'. ' },
-  { label: 'Simple', ramp: '@#S%?*+;:,. ' },
-  { label: 'Minimal', ramp: '@:. ' },
-  { label: 'Numbers', ramp: '98765432 ' },
-  { label: 'Block Elements', ramp: '█▓▒░ ' },
+  { label: 'Standard (Ascgen2)', ramp: DEFAULT_RAMP },
+  { label: 'Detailed', ramp: ' .\'`^",:;Il!i><~+_-?][}{1)(|\\/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$' },
+  { label: 'Simple', ramp: ' .,:;+*?%S#@' },
+  { label: 'Minimal', ramp: ' .:@' },
+  { label: 'Numbers', ramp: ' 23456789' },
+  { label: 'Block Elements', ramp: ' ░▒▓█' },
 ];
 
 export function mapBrightnessToCharacter(brightness: number, ramp: string): string {
