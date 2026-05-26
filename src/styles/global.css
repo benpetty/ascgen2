@@ -127,6 +127,11 @@ html, body {
 .sidebar::-webkit-scrollbar-track { background: var(--bg); }
 .sidebar::-webkit-scrollbar-thumb { background: var(--border); }
 
+/* display:none so layout reflows and the preview area expands to fill the freed space */
+.sidebar-hidden {
+  display: none;
+}
+
 /* ── Settings panel ────────────────────────────────────────── */
 .settings-panel {
   padding: 4px 0;
@@ -542,6 +547,17 @@ html, body {
   font-size: 11px;
   margin: 0;
   text-align: center;
+}
+
+/* ── Inline link button ────────────────────────────────────── */
+.btn-link {
+  background: transparent;
+  border: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
 }
 
 /* ── Number input spin cleanup ─────────────────────────────── */

@@ -12,6 +12,8 @@ npm test           # run the Vitest suite once
 npm run lint       # run eslint over src/
 ```
 
+A `Makefile` wraps the same commands: `make dev`, `make build`, `make test`, `make lint`, `make bench`, `make clean`. `make help` lists all targets. Use either form interchangeably.
+
 Linter: `npm run lint` (eslint, config in `eslint.config.js`). A PostToolUse hook in `.claude/settings.local.json` runs it automatically after Edit/Write to `.ts`/`.tsx` files.
 
 ## Architecture

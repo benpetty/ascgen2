@@ -1,5 +1,40 @@
 import { describe, it, expect } from 'vitest';
-import { calculateAutoOutputHeight } from '../imageProcessor';
+import { calculateAutoOutputHeight, pixelsToGrayscaleInto } from '../imageProcessor';
+
+describe('pixelsToGrayscaleInto', () => {
+  it('writes ITU-R BT.601 luminance into the provided output buffer', () => {
+    // Two RGBA pixels: pure white, pure black
+    const rgba = new Uint8ClampedArray([255, 255, 255, 255, 0, 0, 0, 255]);
+    const output = new Uint8Array(2);
+    pixelsToGrayscaleInto(rgba, output);
+    expect(output[0]).toBe(255);
+    expect(output[1]).toBe(0);
+  });
+
+  it('matches the ITU-R BT.601 weights for a known RGB sample', () => {
+    // Pure red — 0.299 * 255 ≈ 76
+    const rgba = new Uint8ClampedArray([255, 0, 0, 255]);
+    const output = new Uint8Array(1);
+    pixelsToGrayscaleInto(rgba, output);
+    expect(output[0]).toBe(76);
+  });
+
+  it('applies BT.601 weights for green and blue channels', () => {
+    // Pure green: 0.587 * 255 ≈ 150 (Math.round(149.685))
+    // Pure blue:  0.114 * 255 ≈ 29  (Math.round(29.07))
+    const rgba = new Uint8ClampedArray([0, 255, 0, 255, 0, 0, 255, 255]);
+    const output = new Uint8Array(2);
+    pixelsToGrayscaleInto(rgba, output);
+    expect(output[0]).toBe(150);
+    expect(output[1]).toBe(29);
+  });
+
+  it('throws when buffer sizes do not match', () => {
+    const rgba = new Uint8ClampedArray(8);  // 2 pixels
+    const output = new Uint8Array(3);        // expects 3 pixels worth
+    expect(() => pixelsToGrayscaleInto(rgba, output)).toThrow(/does not match/);
+  });
+});
 
 describe('calculateAutoOutputHeight', () => {
   it('calculates height preserving aspect ratio with character ratio applied', () => {

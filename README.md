@@ -14,10 +14,21 @@ A browser-based port of the original [ASCII Generator 2](https://ascgendotnet.jm
 
 - Drag & drop or load any image (JPG, PNG, GIF, WebP, BMP)
 - Real-time ASCII preview with zoom controls
+- **Live webcam mode** — stream your camera through the converter in real time (see below)
 - Full image processing pipeline: stretch, brightness, contrast, levels, sharpen, unsharp mask, dither, flip
 - 6 character ramp presets + fully editable custom ramp
 - Color output mode — per-character RGB sampled from the source image
 - Export as `.txt`, `.html`, `.png`, or copy to clipboard
+
+### Live webcam mode
+
+Click **[START CAMERA]** in the header (or the **or [START CAMERA]** affordance in the drop zone) to stream your device camera through the ASCII converter in real time. Works on desktop and mobile (rear camera default on phones, with a **[FLIP]** control to switch). All filter sliders take effect on the live feed instantly.
+
+- **[SNAPSHOT]** freezes the current frame so you can fine-tune filters and export the captured frame like any loaded image
+- **[RESUME]** returns to streaming from the live camera
+- **[STOP CAMERA]** releases the camera (browser indicator turns off)
+
+Camera access requires a secure (HTTPS) connection — the GitHub Pages deployment satisfies this automatically. Live mode renders in grayscale at ~60 FPS on a typical laptop; color sampling is reserved for still images.
 
 ## Development
 
@@ -26,7 +37,11 @@ npm install
 npm run dev       # localhost:4321
 npm run build     # production build → dist/
 npm run preview   # preview the build locally
+npm test          # run the Vitest test suite once
+npm run lint      # run ESLint over src/
 ```
+
+A `Makefile` wraps the same commands as shorter shortcuts — `make dev`, `make build`, `make test`, `make lint`, `make bench`, `make clean`. Run `make help` for the full list.
 
 ## Credits
 

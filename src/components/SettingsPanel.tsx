@@ -4,7 +4,6 @@ import { RAMP_PRESETS } from '../lib/asciiRamp';
 import { SettingsSection } from './controls/SettingsSection';
 import { TerminalSlider } from './controls/TerminalSlider';
 import { TerminalCheckbox } from './controls/TerminalCheckbox';
-import { TerminalNumberInput } from './controls/TerminalNumberInput';
 import { downloadTextFile, copyTextToClipboard } from '../lib/exporters/textExporter';
 import { downloadHtmlFile } from '../lib/exporters/htmlExporter';
 import { downloadImageFile } from '../lib/exporters/imageExporter';
@@ -65,7 +64,7 @@ export function SettingsPanel({
     <div className="settings-panel">
       {/* OUTPUT SIZE */}
       <SettingsSection title="OUTPUT SIZE">
-        <TerminalNumberInput
+        <TerminalSlider
           label="Width (chars)"
           value={settings.outputWidth}
           min={10}
@@ -78,7 +77,7 @@ export function SettingsPanel({
           onChange={(checked) => updateSetting('maintainAspectRatio', checked)}
         />
         {!settings.maintainAspectRatio && (
-          <TerminalNumberInput
+          <TerminalSlider
             label="Height (chars)"
             value={settings.outputHeight}
             min={1}

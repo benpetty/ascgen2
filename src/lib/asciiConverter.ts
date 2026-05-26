@@ -1,8 +1,9 @@
-import type { ConversionSettings, AsciiGrid, AsciiCell, GrayscaleImage } from './types';
+import type { ConversionSettings, AsciiGrid, AsciiCell } from './types';
 import {
   extractGrayscaleValues,
   extractColorValues,
   calculateAutoOutputHeight,
+  getSourceDimensions,
 } from './imageProcessor';
 import { applyStretchFilter } from './filters/stretchFilter';
 import { applyBrightnessContrastFilter } from './filters/brightnessContrastFilter';
@@ -13,91 +14,102 @@ import { applyFlipHorizontalFilter, applyFlipVerticalFilter } from './filters/fl
 import { mapBrightnessToCharacter, reverseRamp } from './asciiRamp';
 
 function resolveOutputDimensions(
-  image: HTMLImageElement,
-  settings: ConversionSettings
+  source: CanvasImageSource,
+  settings: ConversionSettings,
 ): { width: number; height: number } {
   const outputWidth = Math.max(1, settings.outputWidth);
-
   let outputHeight: number;
   if (settings.outputHeight > 0 && !settings.maintainAspectRatio) {
     outputHeight = settings.outputHeight;
   } else {
+    const { width: sourceWidth, height: sourceHeight } = getSourceDimensions(source);
     outputHeight = calculateAutoOutputHeight(
-      image.naturalWidth,
-      image.naturalHeight,
+      sourceWidth,
+      sourceHeight,
       outputWidth,
-      settings.characterAspectRatio
+      settings.characterAspectRatio,
     );
   }
-
   return { width: outputWidth, height: Math.max(1, outputHeight) };
 }
 
-function applyFilterPipeline(
-  grayscaleImage: GrayscaleImage,
-  settings: ConversionSettings
-): GrayscaleImage {
-  let processed = grayscaleImage;
+export function applyFilterPipeline(
+  inputBuffer: Uint8Array,
+  scratchBuffer: Uint8Array,
+  width: number,
+  height: number,
+  settings: ConversionSettings,
+): Uint8Array {
+  let read = inputBuffer;
+  let write = scratchBuffer;
 
-  // 1. Stretch — normalize to full tonal range
+  // 1. Stretch
   if (settings.applyStretch) {
-    processed = applyStretchFilter(processed);
+    applyStretchFilter(read, write, width, height);
+    [read, write] = [write, read];
   }
 
   // 2. Brightness / Contrast
   if (settings.brightness !== 0 || settings.contrast !== 0) {
-    processed = applyBrightnessContrastFilter(processed, settings.brightness, settings.contrast);
+    applyBrightnessContrastFilter(read, write, width, height, settings.brightness, settings.contrast);
+    [read, write] = [write, read];
   }
 
-  // 3. Levels — tonal range and gamma
+  // 3. Levels
   const levelsNeutral =
-    settings.levelsInputMin === 0 &&
-    settings.levelsInputMax === 255 &&
-    settings.levelsGamma === 1.0;
+    settings.levelsInputMin === 0 && settings.levelsInputMax === 255 && settings.levelsGamma === 1.0;
   if (!levelsNeutral) {
-    processed = applyLevelsFilter(
-      processed,
-      settings.levelsInputMin,
-      settings.levelsInputMax,
-      settings.levelsGamma
-    );
+    applyLevelsFilter(read, write, width, height, settings.levelsInputMin, settings.levelsInputMax, settings.levelsGamma);
+    [read, write] = [write, read];
   }
 
-  // 4. Sharpening — only one mode active at a time
+  // 4. Sharpening (mutually exclusive)
   if (settings.applyUnsharpMask) {
-    processed = applyUnsharpMaskFilter(processed);
+    applyUnsharpMaskFilter(read, write, width, height);
+    [read, write] = [write, read];
   } else if (settings.applySharpen) {
-    processed = applySharpenFilter(processed);
+    applySharpenFilter(read, write, width, height);
+    [read, write] = [write, read];
   }
 
   // 5. Dither
   if (settings.ditherAmount > 0 || settings.ditherRandom > 0) {
-    processed = applyDitherFilter(processed, settings.ditherAmount, settings.ditherRandom);
+    applyDitherFilter(read, write, width, height, settings.ditherAmount, settings.ditherRandom);
+    [read, write] = [write, read];
   }
 
-  // 6. Flip transforms
+  // 6. Flips
   if (settings.flipHorizontal) {
-    processed = applyFlipHorizontalFilter(processed);
+    applyFlipHorizontalFilter(read, write, width, height);
+    [read, write] = [write, read];
   }
   if (settings.flipVertical) {
-    processed = applyFlipVerticalFilter(processed);
+    applyFlipVerticalFilter(read, write, width, height);
+    [read, write] = [write, read];
   }
 
-  return processed;
+  return read;
 }
 
 export function convertImageToAscii(
-  image: HTMLImageElement,
-  settings: ConversionSettings
+  source: CanvasImageSource,
+  settings: ConversionSettings,
 ): AsciiGrid {
-  const { width: outputWidth, height: outputHeight } = resolveOutputDimensions(image, settings);
+  const { width: outputWidth, height: outputHeight } = resolveOutputDimensions(source, settings);
 
-  const grayscaleImage = extractGrayscaleValues(image, outputWidth, outputHeight);
-  const processedImage = applyFilterPipeline(grayscaleImage, settings);
+  const grayscaleImage = extractGrayscaleValues(source, outputWidth, outputHeight);
+  const scratchBuffer = new Uint8Array(outputWidth * outputHeight);
+  const finalBuffer = applyFilterPipeline(
+    grayscaleImage.values,
+    scratchBuffer,
+    outputWidth,
+    outputHeight,
+    settings,
+  );
 
   const colorValues =
     settings.colorMode === 'color'
-      ? extractColorValues(image, outputWidth, outputHeight)
+      ? extractColorValues(source, outputWidth, outputHeight)
       : null;
 
   const effectiveRamp = settings.invertRamp
@@ -105,26 +117,16 @@ export function convertImageToAscii(
     : settings.characterRamp;
 
   const grid: AsciiGrid = [];
-
   for (let row = 0; row < outputHeight; row++) {
     const gridRow: AsciiCell[] = [];
-
     for (let col = 0; col < outputWidth; col++) {
       const index = row * outputWidth + col;
-      const brightness = processedImage.values[index];
-      const character = mapBrightnessToCharacter(brightness, effectiveRamp);
-
+      const character = mapBrightnessToCharacter(finalBuffer[index], effectiveRamp);
       const cell: AsciiCell = { character };
-
-      if (colorValues) {
-        cell.color = colorValues[index];
-      }
-
+      if (colorValues) cell.color = colorValues[index];
       gridRow.push(cell);
     }
-
     grid.push(gridRow);
   }
-
   return grid;
 }
