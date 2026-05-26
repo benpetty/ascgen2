@@ -120,11 +120,13 @@ export function useLiveAscii(
   }, []);
 
   const tick = useCallback(() => {
+    if (statusRef.current !== 'streaming') return;     // legitimate exit (paused/stopped)
     const camera = cameraRef.current;
+    if (!camera) return;                                // legitimate exit (teardown)
     const pre = preRef.current;
-    if (!camera || !pre) return;
-    if (statusRef.current !== 'streaming') return;
-    if (!camera.isReady()) {
+    if (!pre || !camera.isReady()) {
+      // Transient: <pre> not yet mounted (initial render race) or video metadata not yet loaded.
+      // Reschedule to try again next frame instead of silently dying.
       rafHandleRef.current = requestAnimationFrame(tickRef.current);
       return;
     }
@@ -172,14 +174,26 @@ export function useLiveAscii(
     tickRef.current = tick;
   });
 
+  // Schedule the rAF loop when status transitions to 'streaming'. Using useLayoutEffect
+  // (not useEffect) guarantees this runs synchronously after the React commit completes,
+  // so livePreRef.current and statusRef.current are already set when the rAF fires.
+  // This fixes a race on first START where `await getUserMedia` for the permission prompt
+  // causes the rAF to fire before React commits the status update — tick would then read
+  // null refs and bail without rescheduling, deadlocking the loop until snapshot+resume.
+  useLayoutEffect(() => {
+    if (status === 'streaming' && rafHandleRef.current === null) {
+      rafHandleRef.current = requestAnimationFrame(tickRef.current);
+    }
+  }, [status]);
+
   const start = useCallback(async (facing: CameraFacing) => {
     setError(null);
     try {
       cameraRef.current = createCameraSource();
       await cameraRef.current.start({ facing });
       setStatus('streaming');
-      // Issue 1: Use tickRef.current so the seed rAF call uses the latest tick closure.
-      rafHandleRef.current = requestAnimationFrame(tickRef.current);
+      // rAF scheduling is handled by the useLayoutEffect above, which fires after React
+      // commits the status='streaming' update — guaranteeing refs are set when rAF fires.
     } catch (caught) {
       const errorName = caught instanceof DOMException ? caught.name : 'Unknown';
       // Issue 4: Use shared CAMERA_EXCEPTION_MESSAGES constant.
@@ -201,8 +215,7 @@ export function useLiveAscii(
   const resume = useCallback(() => {
     cameraRef.current?.resume();
     setStatus('streaming');
-    // Issue 1: Use tickRef.current so the seed rAF call uses the latest tick closure.
-    rafHandleRef.current = requestAnimationFrame(tickRef.current);
+    // rAF scheduling is handled by the useLayoutEffect above.
   }, []);
 
   const stop = teardown;

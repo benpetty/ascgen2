@@ -40,6 +40,9 @@ export function App() {
   const [asciiGrid, setAsciiGrid] = useState<AsciiGrid | null>(null);
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [sidebarVisible, setSidebarVisible] = useState(
+    () => typeof window !== 'undefined' && window.innerWidth >= 768,
+  );
   const fileInputRef = useRef<HTMLInputElement>(null);
   const conversionTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const livePreRef = useRef<HTMLPreElement | null>(null);
@@ -151,6 +154,14 @@ export function App() {
           <span className="header-subtitle">ascii generator v2 — web edition</span>
         </div>
         <div className="header-right">
+          <button
+            className="btn-primary"
+            onClick={() => setSidebarVisible((current) => !current)}
+            type="button"
+            aria-pressed={sidebarVisible}
+          >
+            {sidebarVisible ? '[HIDE SETTINGS]' : '[SETTINGS]'}
+          </button>
           {imageFileName && <span className="header-filename">{imageFileName}</span>}
           {liveAscii.status === 'idle' && (
             <>
@@ -182,7 +193,7 @@ export function App() {
 
       {/* Main content */}
       <div className="app-body">
-        <aside className="sidebar">
+        <aside className={`sidebar ${sidebarVisible ? '' : 'sidebar-hidden'}`}>
           <SettingsPanel
             settings={settings}
             asciiGrid={asciiGrid}
