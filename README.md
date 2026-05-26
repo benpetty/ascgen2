@@ -37,7 +37,11 @@ npm install
 npm run dev       # localhost:4321
 npm run build     # production build → dist/
 npm run preview   # preview the build locally
+npm test          # run the Vitest test suite once
+npm run lint      # run ESLint over src/
 ```
+
+A `Makefile` wraps the same commands as shorter shortcuts — `make dev`, `make build`, `make test`, `make lint`, `make bench`, `make clean`. Run `make help` for the full list.
 
 ## Credits
 
