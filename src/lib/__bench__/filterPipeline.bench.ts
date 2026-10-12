@@ -1,4 +1,4 @@
-import { bench, describe } from 'vitest';
+import { test } from 'vitest';
 import { applyFilterPipeline } from '../asciiConverter';
 import { DEFAULT_RAMP } from '../asciiRamp';
 import type { ConversionSettings } from '../types';
@@ -37,36 +37,36 @@ function makeBuffers() {
   return { inputBuffer, scratchBuffer };
 }
 
-describe('filter pipeline at 80x40 (live-mode grid)', () => {
-  bench('no filters enabled (baseline)', () => {
-    const { inputBuffer, scratchBuffer } = makeBuffers();
-    applyFilterPipeline(inputBuffer, scratchBuffer, width, height, BASE_SETTINGS);
-  });
-
-  bench('stretch + brightness/contrast', () => {
-    const { inputBuffer, scratchBuffer } = makeBuffers();
-    applyFilterPipeline(inputBuffer, scratchBuffer, width, height, {
-      ...BASE_SETTINGS,
-      applyStretch: true,
-      brightness: 10,
-      contrast: 15,
-    });
-  });
-
-  bench('all filters enabled', () => {
-    const { inputBuffer, scratchBuffer } = makeBuffers();
-    applyFilterPipeline(inputBuffer, scratchBuffer, width, height, {
-      ...BASE_SETTINGS,
-      applyStretch: true,
-      brightness: 10,
-      contrast: 15,
-      levelsInputMin: 10,
-      levelsInputMax: 240,
-      levelsGamma: 1.2,
-      applySharpen: true,
-      ditherAmount: 3,
-      ditherRandom: 2,
-      flipHorizontal: true,
-    });
-  });
+test('filter pipeline at 80x40 (live-mode grid)', async ({ bench }) => {
+  await bench.compare(
+    bench('no filters enabled (baseline)', () => {
+      const { inputBuffer, scratchBuffer } = makeBuffers();
+      applyFilterPipeline(inputBuffer, scratchBuffer, width, height, BASE_SETTINGS);
+    }),
+    bench('stretch + brightness/contrast', () => {
+      const { inputBuffer, scratchBuffer } = makeBuffers();
+      applyFilterPipeline(inputBuffer, scratchBuffer, width, height, {
+        ...BASE_SETTINGS,
+        applyStretch: true,
+        brightness: 10,
+        contrast: 15,
+      });
+    }),
+    bench('all filters enabled', () => {
+      const { inputBuffer, scratchBuffer } = makeBuffers();
+      applyFilterPipeline(inputBuffer, scratchBuffer, width, height, {
+        ...BASE_SETTINGS,
+        applyStretch: true,
+        brightness: 10,
+        contrast: 15,
+        levelsInputMin: 10,
+        levelsInputMax: 240,
+        levelsGamma: 1.2,
+        applySharpen: true,
+        ditherAmount: 3,
+        ditherRandom: 2,
+        flipHorizontal: true,
+      });
+    }),
+  );
 });
