@@ -2,7 +2,7 @@
 
 help:
 	@echo "ascgen2 — available targets:"
-	@echo "  make install   Install npm dependencies"
+	@echo "  make install   Install dependencies with pnpm"
 	@echo "  make dev       Start the dev server at http://localhost:4321"
 	@echo "  make build     Production build to dist/"
 	@echo "  make preview   Preview the production build locally"
@@ -12,25 +12,25 @@ help:
 	@echo "  make clean     Remove node_modules and dist/"
 
 install:
-	npm install
+	pnpm install
 
 dev:
-	npm run dev
+	pnpm dev
 
 build:
-	npm run build
+	pnpm build
 
 preview:
-	npm run preview
+	pnpm preview
 
 test:
-	npm test
+	pnpm test
 
 lint:
-	npm run lint
+	pnpm lint
 
 bench:
-	npx vitest bench --run
+	pnpm exec vitest bench --run
 
 clean:
 	rm -rf node_modules dist

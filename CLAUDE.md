@@ -5,16 +5,18 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Commands
 
 ```bash
-npm run dev        # start dev server at localhost:4321
-npm run build      # production build → dist/
-npm run preview    # preview the production build locally
-npm test           # run the Vitest suite once
-npm run lint       # run eslint over src/
+pnpm dev           # start dev server at localhost:4321
+pnpm build         # production build → dist/
+pnpm preview       # preview the production build locally
+pnpm test          # run the Vitest suite once
+pnpm lint          # run eslint over src/
 ```
 
 A `Makefile` wraps the same commands: `make dev`, `make build`, `make test`, `make lint`, `make bench`, `make clean`. `make help` lists all targets. Use either form interchangeably.
 
-Linter: `npm run lint` (eslint, config in `eslint.config.js`). A PostToolUse hook in `.claude/settings.local.json` runs it automatically after Edit/Write to `.ts`/`.tsx` files.
+Package manager: pnpm, pinned by `packageManager` in `package.json`; `pnpm-workspace.yaml` holds the dependency install-script allowlist.
+
+Linter: `pnpm lint` (eslint, config in `eslint.config.js`). A PostToolUse hook in `.claude/settings.local.json` runs it automatically after Edit/Write to `.ts`/`.tsx` files.
 
 ## Architecture
 
