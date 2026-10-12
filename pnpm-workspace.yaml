@@ -1,0 +1,7 @@
+# pnpm settings for this single-package repo.
+
+# Dependency install scripts are off unless listed as true. Both only verify
+# or rebuild a native binary that pnpm already installs prebuilt.
+allowBuilds:
+  esbuild: false
+  sharp: false

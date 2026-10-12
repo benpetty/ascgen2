@@ -33,12 +33,12 @@ Camera access requires a secure (HTTPS) connection — the GitHub Pages deployme
 ## Development
 
 ```sh
-npm install
-npm run dev       # localhost:4321
-npm run build     # production build → dist/
-npm run preview   # preview the build locally
-npm test          # run the Vitest test suite once
-npm run lint      # run ESLint over src/
+pnpm install
+pnpm dev          # localhost:4321
+pnpm build        # production build → dist/
+pnpm preview      # preview the build locally
+pnpm test         # run the Vitest test suite once
+pnpm lint         # run ESLint over src/
 ```
 
 A `Makefile` wraps the same commands as shorter shortcuts — `make dev`, `make build`, `make test`, `make lint`, `make bench`, `make clean`. Run `make help` for the full list.
