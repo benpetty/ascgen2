@@ -30,7 +30,7 @@ lint:
 	pnpm lint
 
 bench:
-	pnpm exec vitest bench --run
+	pnpm exec vitest bench --run --reporter=default
 
 clean:
 	rm -rf node_modules dist
